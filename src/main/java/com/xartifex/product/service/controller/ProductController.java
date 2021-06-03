@@ -1,5 +1,6 @@
 package com.xartifex.product.service.controller;
 
+import com.xartifex.product.service.dto.ProductDto;
 import com.xartifex.product.service.entity.Product;
 import com.xartifex.product.service.service.ProductService;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +22,13 @@ public class ProductController {
   }
 
   @GetMapping("/{sku}")
-  private Mono<ResponseEntity<Product>> getEmployeeById(@PathVariable Long sku) {
+  private Mono<ResponseEntity<ProductDto>> getEmployeeById(@PathVariable Long sku) {
     return productService.findBySku(sku).map(ResponseEntity::ok)
         .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
   }
 
   @PutMapping("/{sku}/add")
-  private Mono<ResponseEntity<Product>> saveEmployee(@PathVariable Long sku, Product product) {
+  private Mono<ResponseEntity<ProductDto>> saveEmployee(@PathVariable Long sku, ProductDto product) {
     product.setSku(sku);
     return productService.upsert(product).map(ResponseEntity::ok);
   }
